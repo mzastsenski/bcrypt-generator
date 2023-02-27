@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <title>Bcrypt-Generator</title>
+  </head>
+  <body>
+    <h1>Bcrypt-Generator</h1>
+    <div class="container">
+      <div class="encrypt">
+        <h2>Encrypt</h2>
+        <div class="hash"></div>
+        <div class="input-container">
+          <input type="text" name="password" />
+          <button class="hash_button">Encrypt</button>
+        </div>
+        <p>Rounds</p>
+        <div class="count_buttons">
+          <span>-</span>
+          <span>12</span>
+          <span>+</span>
+        </div>
+      </div>
+      <div class="decrypt">
+        <h2>Decrypt</h2>
+        <div class="result"></div>
+        <div class="input-container">
+          <input type="text" name="hash" class="hash-input" />
+        </div>
+        <div class="input-container">
+          <input type="text" name="check" />
+          <button class="check_button">Check</button>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    const hashDiv = document.querySelector(".hash");
+    const resultDiv = document.querySelector(".result");
+
+    const passwordInput = document.querySelector('input[name="password"]');
+    const checkInput = document.querySelector('input[name="check"]');
+    const hashInput = document.querySelector('input[name="hash"]');
+
+    const checkButton = document.querySelector(".check_button");
+    const hashButton = document.querySelector(".hash_button");
+
+    const getHash = () => {
+      fetch("/hash", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({ pass: passwordInput.value, rounds: 8 }),
+      })
+        .then((res) => res.json())
+        .then((res) => (hashDiv.innerHTML = res));
+    };
+
+    const compare = () => {
+      fetch("/compare", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+          pass: checkInput.value,
+          hash: hashInput.value,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => (resultDiv.innerHTML = res));
+    };
+
+    hashButton.addEventListener("click", getHash);
+    checkButton.addEventListener("click", compare);
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Inter, sans-serif;
+    }
+
+    h1 {
+      color: white;
+      background-color: rgb(106, 106, 106);
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      /* gap: 50px; */
+      margin: 20px auto;
+    }
+
+    .count_buttons {
+      display: flex;
+      width: 96px;
+      background-color: rgb(233, 232, 232);
+      border-radius: 12px;
+      margin: 10px 0;
+    }
+    .count_buttons span {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .count_buttons span:nth-child(1):hover {
+      background-color: rgb(157, 156, 156);
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+    }
+
+    .count_buttons span:nth-child(3):hover {
+      background-color: rgb(157, 156, 156);
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    .decrypt,
+    .encrypt {
+      min-height: 220px;
+      width: 80%;
+      max-width: 640px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-container {
+      width: 100%;
+      margin: 10px auto;
+    }
+
+    .hash-input {
+      width: 100%;
+    }
+
+    input {
+      width: calc(100% - 70px);
+      padding: 0 12px;
+      height: 36px;
+      border: 1px solid black;
+      border-radius: 3px;
+      margin: 0;
+    }
+    .input-container button {
+      width: 65px;
+      height: 36px;
+      margin: 0;
+    }
+    @media (max-width: 1100px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</html>
