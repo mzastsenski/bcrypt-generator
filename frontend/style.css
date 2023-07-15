@@ -15,10 +15,13 @@ h1 {
 .container {
   display: flex;
   align-items: center;
-  gap: 50px;
+  /* gap: 50px; */
   margin: 20px auto;
 }
 
+.hash {
+  cursor: pointer;
+}
 .count_buttons {
   display: flex;
   width: 96px;
@@ -50,7 +53,7 @@ h1 {
 
 .decrypt,
 .encrypt {
-  min-height: 300px;
+  min-height: 220px;
   width: 80%;
   max-width: 640px;
   padding: 20px;
@@ -80,7 +83,7 @@ input {
   height: 36px;
   margin: 0;
 }
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
   .container {
     flex-direction: column;
   }

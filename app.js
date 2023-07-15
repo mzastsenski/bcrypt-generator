@@ -18,7 +18,7 @@ app.use((_, res, next) => {
   next();
 });
 
-app.get("/test", (_, res) => res.send(204));
+app.get("/test", (_, res) => res.send("ok"));
 
 app.post("/hash", (req, res) => {
   const { pass, rounds } = req.body;
